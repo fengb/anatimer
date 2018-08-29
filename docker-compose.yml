@@ -1,0 +1,8 @@
+version: '3.0'
+
+services:
+  anatimer:
+    image: centos/systemd
+    privileged: true
+    volumes:
+      - '.:/app'
