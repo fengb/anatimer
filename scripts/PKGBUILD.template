@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -oue pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"/..
+
+systemd_files=($(ls systemd))
+
+cat <<EOF
+pkgname=anatimer
+pkgver=$VERSION
+pkgrel=1
+pkgdesc="Emulate anacron using systemd timers"
+arch=('any')
+url="https://github.com/fengb/anatimer"
+license=('MIT')
+source=("https://github.com/fengb/anatimer/archive/v\${pkgver}.tar.gz")
+depends=('run-parts')
+sha256sums=("$SHA256")
+
+package() {
+  cd "\${srcdir}/\${pkgname}-\${pkgver}"
+$(for file in "${systemd_files[@]}"; do
+    echo "  install -D -m0644 systemd/$file \"\$pkgdir/usr/lib/systemd/system/$file\""
+  done
+)
+}
+EOF
