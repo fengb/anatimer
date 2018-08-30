@@ -5,6 +5,7 @@ set -oue pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"/..
 
 systemd_files=($(ls systemd))
+cron_dirs=($(printf "%s\n" "${systemd_files[@]}" | sed -n 's/^.*@\(.*\)\.timer$/\1/p'))
 
 cat <<EOF
 pkgname=anatimer
@@ -20,7 +21,12 @@ sha256sums=("$SHA256")
 
 package() {
   cd "\${srcdir}/\${pkgname}-\${pkgver}"
-  set -o verbose
+
+$(for dir in "${cron_dirs[@]}"; do
+    echo "  mkdir -p \"\$pkgdir/etc/$dir\""
+  done
+)
+
 $(for file in "${systemd_files[@]}"; do
     echo "  install -D -m0644 systemd/$file \"\$pkgdir/usr/lib/systemd/system/$file\""
   done
