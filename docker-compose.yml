@@ -6,3 +6,5 @@ services:
     privileged: true
     volumes:
       - '.:/app'
+      - './scripts:/usr/local/bin'
+      - './systemd:/usr/local/lib/systemd/system'

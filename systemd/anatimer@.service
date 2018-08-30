@@ -1,0 +1,6 @@
+[Unit]
+Description=Run scripts in directory '/etc/%i'
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/run-parts /etc/%i
