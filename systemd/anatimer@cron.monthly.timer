@@ -1,9 +1,9 @@
 [Unit]
-Description=Run /etc/cron.monthly
+Description=Run %E/cron.monthly
 
 [Timer]
 OnCalendar=monthly
 Persistent=true
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

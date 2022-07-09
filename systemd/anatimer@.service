@@ -1,6 +1,7 @@
 [Unit]
-Description=Run scripts in directory '/etc/%i'
+Description=Run scripts in directory '%E/%i'
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/run-parts /etc/%i
+ExecStartPre=mkdir -p '%E/%i'
+ExecStart=run-parts '%E/%i'

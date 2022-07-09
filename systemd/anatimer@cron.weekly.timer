@@ -1,9 +1,9 @@
 [Unit]
-Description=Run /etc/cron.weekly
+Description=Run %E/cron.weekly
 
 [Timer]
 OnCalendar=weekly
 Persistent=true
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

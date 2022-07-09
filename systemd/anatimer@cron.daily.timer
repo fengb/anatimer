@@ -1,9 +1,9 @@
 [Unit]
-Description=Run /etc/cron.daily
+Description=Run %E/cron.daily
 
 [Timer]
 OnCalendar=daily
 Persistent=true
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

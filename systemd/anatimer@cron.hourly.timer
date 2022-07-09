@@ -1,8 +1,8 @@
 [Unit]
-Description=Run /etc/cron.hourly
+Description=Run %E/cron.hourly
 
 [Timer]
 OnCalendar=hourly
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
