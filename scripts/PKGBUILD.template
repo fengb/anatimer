@@ -5,31 +5,34 @@ set -oue pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"/..
 
 systemd_files=($(ls systemd))
-cron_dirs=($(printf "%s\n" "${systemd_files[@]}" | sed -n 's/^.*@\(.*\)\.timer$/\1/p'))
 
 cat <<EOF
 pkgname=anatimer
 pkgver=$VERSION
 pkgrel=1
 pkgdesc="Emulate anacron using systemd timers"
-arch=('any')
+arch=("any")
 url="https://github.com/fengb/anatimer"
-license=('MIT')
+license=("MIT")
 source=("https://github.com/fengb/anatimer/archive/v\${pkgver}.tar.gz")
-depends=('run-parts')
+depends=("run-parts")
 sha256sums=("$SHA256")
 
 package() {
   cd "\${srcdir}/\${pkgname}-\${pkgver}"
 
-$(for dir in "${cron_dirs[@]}"; do
-    echo "  mkdir -p \"\$pkgdir/etc/$dir\""
-  done
-)
+$(for file in "${systemd_files[@]}"; do
+  if [[ "$file" =~ anatimer.(cron.[[:alpha:]]*).timer ]]; then
+    echo "  mkdir -p \"\${pkgdir}/etc/${BASH_REMATCH[1]}\""
+  fi
+done)
 
 $(for file in "${systemd_files[@]}"; do
-    echo "  install -D -m0644 systemd/$file \"\$pkgdir/usr/lib/systemd/system/$file\""
-  done
-)
+  echo "  install -D -m0644 \"systemd/$file\" \"\${pkgdir}/usr/lib/systemd/system/$file\""
+done)
+
+$(for file in "${systemd_files[@]}"; do
+  echo "  install -D -m0644 \"systemd/$file\" \"\${pkgdir}/usr/lib/systemd/user/$file\""
+done)
 }
 EOF
