@@ -13,7 +13,7 @@ build/PKGBUILD: build/PKGBUILD-v$(VERSION)
 	cp "$<" "$@"
 
 build/pkg: build/PKGBUILD
-	docker run --user nobody --volume "$(CURDIR)/build:/build" --workdir "/build" base/devel:2018.08.01 makepkg -d
+	docker run --user nobody --platform linux/amd64 --volume "$(CURDIR)/build:/build" --workdir "/build" archlinux:base-devel makepkg -d
 
 clean:
 	rm -r build
