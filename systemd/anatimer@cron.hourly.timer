@@ -5,4 +5,4 @@ Description=Run %E/cron.hourly
 OnCalendar=hourly
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
